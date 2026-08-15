@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#3b82f6" />
+  <meta name="description" content="Evidence-based document authenticity and compliance assessment tool" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Authenticon — Document Compliance Assessment Tool</title>
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="logo">
+        <img src="/icon-192.png" alt="Authenticon" class="logo-img" width="48" height="48" />
+        <div>
+          <h1>Authenticon</h1>
+          <p class="tagline">Document Compliance Assessment Tool</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span class="badge">Evidence-Based Analysis</span>
+        <span id="sessionBadge" class="session-badge" hidden></span>
+      </div>
+    </header>
+
+    <main>
+      <!-- STEP 1: UPLOAD -->
+      <section id="step-upload" class="step active">
+        <div class="step-header">
+          <span class="step-num">1</span>
+          <h2>Upload Documents</h2>
+        </div>
+        <p class="step-desc">Upload up to 5 documents (PDF, JPG, PNG, GIF, and common formats). Max 5 GB per file. Camera capture supported on mobile.</p>
+
+        <div class="upload-zone" id="dropZone">
+          <input type="file" id="fileInput" multiple accept=".pdf,.jpg,.jpeg,.png,.gif,.tif,.tiff,.bmp,.webp,image/*,application/pdf" hidden />
+          <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden />
+          <div class="upload-icon">📄</div>
+          <p><strong>Drag & drop</strong> files here or</p>
+          <div class="btn-row">
+            <button type="button" class="btn primary" id="btnSelectFiles">Select Files</button>
+            <button type="button" class="btn secondary" id="btnCamera">Use Camera</button>
+          </div>
+          <p class="hint">Supported: Driver’s License, State ID, Passport, SSN Card, Utility Bill, Bank Statement, Bank Letterhead, Mortgage Deed, Court Document, Paystub, Payroll Check</p>
+        </div>
+
+        <div id="fileList" class="file-list" hidden></div>
+        <div class="actions">
+          <button type="button" class="btn primary" id="btnToTypes" disabled>Continue to Type Selection →</button>
+        </div>
+      </section>
+
+      <!-- STEP 2: SELECT TYPES -->
+      <section id="step-types" class="step">
+        <div class="step-header">
+          <span class="step-num">2</span>
+          <h2>Select Exact Document Type</h2>
+        </div>
+        <p class="step-desc">Assign the precise document type for each upload. Analysis rules are type-specific.</p>
+        <div id="typeAssignments" class="type-assignments"></div>
+        <div class="actions">
+          <button type="button" class="btn secondary" id="btnBackUpload">← Back</button>
+          <button type="button" class="btn primary" id="btnAnalyze" disabled>ANALYZE DOCUMENT NOW</button>
+        </div>
+      </section>
+
+      <!-- STEP 3: ANALYZING -->
+      <section id="step-analyzing" class="step">
+        <div class="analyzing-box">
+          <div class="spinner"></div>
+          <h2>Analyzing Documents</h2>
+          <p id="analyzeStatus">Running multi-stage evidence pipeline…</p>
+          <ul class="pipeline-steps" id="pipelineSteps">
+            <li>Image quality assessment</li>
+            <li>OCR / text extraction</li>
+            <li>Metadata analysis</li>
+            <li>Typography & layout</li>
+            <li>Basic image forensics</li>
+            <li>Document-type rules</li>
+            <li>Evidence aggregation & scoring</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- STEP 4: RESULTS -->
+      <section id="step-results" class="step">
+        <div class="step-header">
+          <span class="step-num">3</span>
+          <h2>Analysis Results</h2>
+        </div>
+        <div id="crossDoc" class="cross-doc" hidden></div>
+        <div id="resultsContainer" class="results-container"></div>
+        <div class="actions">
+          <button type="button" class="btn secondary" id="btnNewSession">Start New Session</button>
+          <button type="button" class="btn danger" id="btnDeleteSession">Delete All Uploaded Data</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p><strong>Evidence First.</strong> Results are derived only from measurable properties of the uploaded files. Optical security features, live issuer databases, and advanced forensic toolkits are not available in this deployment. Classifications are never fabricated. When evidence is insufficient the system returns <em>UNABLE TO DETERMINE</em>.</p>
+      <p class="small">Authenticon does not replace official verification channels or professional forensic document examination. Do not use for high-stakes decisions without independent confirmation.</p>
+    </footer>
+  </div>
+
+  <!-- Evidence Viewer Modal -->
+  <div id="viewerModal" class="modal" hidden>
+    <div class="modal-content">
+      <button class="modal-close" id="closeViewer">&times;</button>
+      <h3 id="viewerTitle">Document Evidence</h3>
+      <div class="viewer-toolbar">
+        <button id="zoomIn">Zoom +</button>
+        <button id="zoomOut">Zoom −</button>
+        <button id="zoomReset">Reset</button>
+      </div>
+      <div class="viewer-canvas-wrap" id="viewerWrap">
+        <img id="viewerImg" alt="Document preview" />
+        <canvas id="overlayCanvas"></canvas>
+      </div>
+      <div id="viewerDetails" class="viewer-details"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
