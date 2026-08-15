@@ -1,0 +1,13 @@
+# Render.com Blueprint - free permanent web service
+# After connecting the GitHub repo, Render can use this file.
+services:
+  - type: web
+    name: authenticon
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+    healthCheckPath: /api/health
+    autoDeploy: true

@@ -1,0 +1,9 @@
+uploads/
+test_docs/
+static/
+**/__pycache__/
+*.pyc
+.git/
+*.log
+.env
+.venv/
